@@ -19,4 +19,5 @@ class Regenwormen:
         return list_of_stones
     
     def active_game():
-        
+        # runs the game, chooses a random player to start the game with
+        pass
