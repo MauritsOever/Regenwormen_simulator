@@ -11,7 +11,8 @@ from regenwormen import Regenwormen
 
 def main():
     player1 = player()
-    player1.turn()
+    print(player1.roll())
+    #player1.turn()
     # print(player1.current_worms)
 
 if __name__ == "__main__":

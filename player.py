@@ -68,14 +68,16 @@ class player:
         None.
 
         """
-        if available_stones=="full":
-            available_stones= [i for i in range(21,37)]
+        if available_stones=="full":                    # filler statement, when actually running the
+            available_stones= [i for i in range(21,37)] # game u need to pass always anyway
+                                                        
         
         print(f"{self.playername}, it's your turn!")
         print("Rolling...")
         time.sleep(1)
         print("")
-        
+        rolled_dice = self.roll(8)
+        print("You rolled ")
         turn_active = True
         available_dice = 8
         while turn_active:
@@ -84,8 +86,15 @@ class player:
             print(f"You rolled {dice_rolled}")
             action = input("Do you want to take, steal or roll?")
             
+            if action == "roll":
+                chosen_number = int(input("Which number do you choose to set aside?")) #need to figure out how to add worm
+                pass # continue loop and store what you chose
+            elif action == "steal":
+                pass # figure out how to handle. maybe change attribute in player and take from initiating next turn
+            elif action == "take":
+                taken_stone = input("Which stone do you want to take?")
+                self.current_stack += [int(taken_stone)] #add a try loop
             # roll, choose dice, choose to roll after (then repeat w less dice) or choose a stone
-            
             
             if available_dice == 0:
                 self.strikeout()
@@ -93,11 +102,8 @@ class player:
                 turn_active = False
         return
         
-    def roll(self, available_dice="full"): 
-        if available_dice == "full":
-            availabe_dice = 8
-            
-        return #random array of ints with length available dice
+    def roll(self, available_dice):
+        return np.random.randint(1,7,available_dice) #random array of ints with length available dice
         
     def take_stone(self, stone_number):
         pass

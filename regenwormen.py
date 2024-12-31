@@ -20,4 +20,11 @@ class Regenwormen:
     
     def active_game():
         # runs the game, chooses a random player to start the game with
+        # maybe loop something like
+        # while game active:
+            # turn player (current_available_stones, stones that you can steal), keep going until they take, steal or run out
+            # if run out, decrease their stack, place it into the current_available_stones, flip highest one
+            # if take, you need to change available stones, and add it to player.current_stack
+            # if steal, you need to change the current_stack of one of the other players (simple loop to figure out which)
+        
         pass
