@@ -11,7 +11,7 @@ from regenwormen import Regenwormen
 
 def main():
     player1 = player()
-    print(player1.roll())
+    print(player1.turn(8))
     #player1.turn()
     # print(player1.current_worms)
 

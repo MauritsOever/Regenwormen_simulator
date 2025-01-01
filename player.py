@@ -75,35 +75,59 @@ class player:
         print(f"{self.playername}, it's your turn!")
         print("Rolling...")
         time.sleep(1)
-        print("")
-        rolled_dice = self.roll(8)
-        print("You rolled ")
         turn_active = True
         available_dice = 8
+        dice_set_aside = []
+        
         while turn_active:
             dice_rolled = self.roll(available_dice)
             
             print(f"You rolled {dice_rolled}")
-            action = input("Do you want to take, steal or roll?")
+            time.sleep(1)
+            # add a check to see if you can choose a number or not-------------------------------------------------------------
+            nr_set_aside = str(input("Which number do you choose to set aside? "))
+            if nr_set_aside != "worm" and nr_set_aside != "Worm":
+                nr_set_aside = int(nr_set_aside)
             
-            if action == "roll":
-                chosen_number = int(input("Which number do you choose to set aside?")) #need to figure out how to add worm
-                pass # continue loop and store what you chose
-            elif action == "steal":
+            if type(nr_set_aside) == str:
+                nr_set_aside = "Worm"
+            
+            for die in dice_rolled:
+                if die == nr_set_aside:
+                    dice_set_aside += [die]
+            
+            available_dice = 8 - len(dice_set_aside)
+            
+            time.sleep(1)
+            points_in_hand = 0
+            for i in dice_set_aside:
+                if i == "Worm":
+                    points_in_hand += 5
+                else:
+                    points_in_hand += i
+                    
+            print(f"You're currently holding the following dice: {dice_set_aside}, giving a total of {points_in_hand} points.")
+            action = input("Do you want to roll, take a stone or steal one from another player? ")
+            print(f"You chose {action}.")
+            
+            if action == "steal" or action == "Steal":
+                turn_active = False
                 pass # figure out how to handle. maybe change attribute in player and take from initiating next turn
-            elif action == "take":
+            elif action == "take" or action == "Take":
                 taken_stone = input("Which stone do you want to take?")
-                self.current_stack += [int(taken_stone)] #add a try loop
+                self.current_stack += [int(taken_stone)] #add a try except statement
+                turn_active = False
             # roll, choose dice, choose to roll after (then repeat w less dice) or choose a stone
             
-            if available_dice == 0:
-                self.strikeout()
-                print("Too bad, no more dice option available")
-                turn_active = False
+            
         return
         
     def roll(self, available_dice):
-        return np.random.randint(1,7,available_dice) #random array of ints with length available dice
+        rolled_dice = list(np.random.randint(1,7,available_dice)) #random array of ints with length available dice
+        for i in range(len(rolled_dice)):
+            if rolled_dice[i] == 6:
+                rolled_dice[i] = "Worm"
+        return rolled_dice
         
     def take_stone(self, stone_number):
         pass
@@ -112,5 +136,6 @@ class player:
         pass
     
     def strikeout(self):
+        # return stone
         pass
     
