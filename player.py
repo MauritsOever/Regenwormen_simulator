@@ -7,7 +7,7 @@ Created on Sun Dec 29 21:43:31 2024
 import time
 import numpy as np
 
-class player:
+class Player:
     
     def __init__(self, bot=False, playername = "Maurits"):
         import time
