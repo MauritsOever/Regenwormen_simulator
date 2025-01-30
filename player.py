@@ -7,7 +7,7 @@ Created on Sun Dec 29 21:43:31 2024
 import time
 import numpy as np
 
-class player:
+class Player:
     
     def __init__(self, bot=False, playername = "Maurits"):
         import time
@@ -125,6 +125,7 @@ class player:
     def roll(self, available_dice):
         rolled_dice = list(np.random.randint(1,7,available_dice)) #random array of ints with length available dice
         for i in range(len(rolled_dice)):
+            rolled_dice[i] = int(rolled_dice[i])
             if rolled_dice[i] == 6:
                 rolled_dice[i] = "Worm"
         return rolled_dice
