@@ -125,6 +125,7 @@ class player:
     def roll(self, available_dice):
         rolled_dice = list(np.random.randint(1,7,available_dice)) #random array of ints with length available dice
         for i in range(len(rolled_dice)):
+            rolled_dice[i] = int(rolled_dice[i])
             if rolled_dice[i] == 6:
                 rolled_dice[i] = "Worm"
         return rolled_dice

@@ -18,7 +18,34 @@ class Regenwormen:
                 list_of_stones += [player.current_stack[-1]]
         return list_of_stones
     
+    def start_game(self):
+        """
+        Function that initiates the game. Will ask for players, names, bots etc.
+
+        Returns
+        -------
+        None.
+
+        """
+        
+        
+        
+        self.active_game()
+        
+        
+        pass
+    
     def active_game():
+        """
+        Initiates the active game loop. Will select a random player to start with.
+        The loops over players and makes their turn. The game ends when all stones
+        are taken or gone. 
+
+        Returns
+        -------
+        None.
+
+        """
         # runs the game, chooses a random player to start the game with
         # maybe loop something like
         # while game active:
@@ -26,5 +53,5 @@ class Regenwormen:
             # if run out, decrease their stack, place it into the current_available_stones, flip highest one
             # if take, you need to change available stones, and add it to player.current_stack
             # if steal, you need to change the current_stack of one of the other players (simple loop to figure out which)
-        
         pass
+    
