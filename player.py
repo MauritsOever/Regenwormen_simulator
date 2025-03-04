@@ -6,11 +6,11 @@ Created on Sun Dec 29 21:43:31 2024
 """
 import time
 import numpy as np
+import os
 
 class Player:
     
     def __init__(self, bot=False, playername = "Maurits"):
-        import time
         """
         Function that intiates the player object. A player can roll when it is
         their turn.
@@ -52,7 +52,7 @@ class Player:
         self.current_worms = current_worms
         return
     
-    def turn(self, available_stones="full", stealable_stones=None):
+    def turn(self, available_stones=[i for i in range(21,37)], stealable_stones=[]):
         """
         When it is the player's turn their roll is intiated. 
 
@@ -65,11 +65,11 @@ class Player:
 
         Returns
         -------
-        None.
-
+        action and information related to the action:
+            "take", and the stone that needs to be taken from the common stack
+            "steal", and which stone needs to be stolen
+            "strikeout", and the current stack. from there you can figure out what to do with the common stack
         """
-        if available_stones=="full":                    # filler statement, when actually running the
-            available_stones= [i for i in range(21,37)] # game u need to pass always anyway
                                                         
         
         print(f"{self.playername}, it's your turn!")
@@ -78,16 +78,41 @@ class Player:
         turn_active = True
         available_dice = 8
         dice_set_aside = []
+        points_in_hand = 0
         
         while turn_active:
-            dice_rolled = self.roll(available_dice)
+            print(f"Available stones on the table are {available_stones}")
+            if len(stealable_stones) > 0:
+                print(f"Stone available to steal are {stealable_stones}")
             
-            print(f"You rolled {dice_rolled}")
-            time.sleep(1)
+            dice_rolled = self.roll(available_dice)
+            if all([die in dice_set_aside for die in dice_rolled]):
+                print(f"You rolled {dice_rolled}.")
+                print("You've struck out! Ending your turn...")
+                if len(self.current_stack) > 0:
+                    print("You have to hand in your last stone :(")
+                return "strikeout", self.current_stack
+            
             # add a check to see if you can choose a number or not-------------------------------------------------------------
-            nr_set_aside = str(input("Which number do you choose to set aside? "))
-            if nr_set_aside != "worm" and nr_set_aside != "Worm":
-                nr_set_aside = int(nr_set_aside)
+            choosing_dice = True
+            while choosing_dice:
+                print(f"You rolled {dice_rolled}")
+                time.sleep(1)
+                
+                nr_set_aside = str(input("Which number do you choose to set aside? "))
+                if nr_set_aside != "worm" and nr_set_aside != "Worm":
+                    try:
+                        if 1 <= int(nr_set_aside) <= 5:
+                            nr_set_aside = int(nr_set_aside)
+                    except:
+                        print("Invalid number added, please enter another number...")
+                        continue
+                
+                if nr_set_aside in dice_set_aside:
+                    print("You've already chosen this number, please choose another one!")
+                    continue
+                choosing_dice = False
+                    
             
             if type(nr_set_aside) == str:
                 nr_set_aside = "Worm"
@@ -105,21 +130,41 @@ class Player:
                     points_in_hand += 5
                 else:
                     points_in_hand += i
-                    
-            print(f"You're currently holding the following dice: {dice_set_aside}, giving a total of {points_in_hand} points.")
-            action = input("Do you want to roll, take a stone or steal one from another player? ")
-            print(f"You chose {action}.")
+            
+            action = None
+            while action == None:
+                print(f"You're currently holding the following dice: {dice_set_aside}, giving a total of {points_in_hand} points.")
+                if points_in_hand >= available_stones[0] and points_in_hand in stealable_stones:
+                    action = input("Do you want to roll, take a stone or steal one from another player? ")
+                    print(f"You chose {action}.")
+                    continue
+                elif points_in_hand >= available_stones[0]:
+                    action = input("Do you want to roll or take a stone?")
+                    print(f"You chose {action}.")
+                    continue
+                elif points_in_hand in stealable_stones:
+                    action = input("Do you want roll or steal a stone from another player? ")
+                    print(f"You chose {action}.")
+                    continue
+                else:
+                    print("You have to roll...")
+                    action = "roll"
+                    continue
+                print("Invalid action, try again!")
             
             if action == "steal" or action == "Steal":
                 turn_active = False
-                pass # figure out how to handle. maybe change attribute in player and take from initiating next turn
+                stolen_stone = points_in_hand #can only steal when you have the correct number of points, and add the check later
+                return "steal", stolen_stone
+            
             elif action == "take" or action == "Take":
                 taken_stone = input("Which stone do you want to take?")
                 self.current_stack += [int(taken_stone)] #add a try except statement
+                return "take", taken_stone
                 turn_active = False
-            # roll, choose dice, choose to roll after (then repeat w less dice) or choose a stone
             
-            
+            os.system("cls")
+                        
         return
         
     def roll(self, available_dice):
@@ -128,15 +173,6 @@ class Player:
             rolled_dice[i] = int(rolled_dice[i])
             if rolled_dice[i] == 6:
                 rolled_dice[i] = "Worm"
+                
         return rolled_dice
-        
-    def take_stone(self, stone_number):
-        pass
-    
-    def steal_stone(self, stone_number, player_number): #subject to change
-        pass
-    
-    def strikeout(self):
-        # return stone
-        pass
     

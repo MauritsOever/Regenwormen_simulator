@@ -10,13 +10,9 @@ from player import Player
 from regenwormen import Regenwormen
 
 def main():
-    #player1 = player()
-    #player1.turn(8)
-    #player1.turn()
-    # print(player1.current_worms)
-    test = Regenwormen()
-    for i in test.list_of_players:
-        print(i.playername)
+    player1 = Player()
+    player1.turn()
+    print(player1.current_worms)
 
 if __name__ == "__main__":
     main()   
