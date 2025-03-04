@@ -52,7 +52,7 @@ class Player:
         self.current_worms = current_worms
         return
     
-    def turn(self, available_stones="full", stealable_stones=[]):
+    def turn(self, available_stones=[i for i in range(21,37)], stealable_stones=[]):
         """
         When it is the player's turn their roll is intiated. 
 
@@ -70,8 +70,6 @@ class Player:
             "steal", and which stone needs to be stolen
             "strikeout", and the current stack. from there you can figure out what to do with the common stack
         """
-        if available_stones=="full":                    # filler statement, when actually running the
-            available_stones= [i for i in range(21,37)] # game u need to pass always anyway
                                                         
         
         print(f"{self.playername}, it's your turn!")
